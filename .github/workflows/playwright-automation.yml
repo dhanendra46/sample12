@@ -1,0 +1,40 @@
+name: playwright-automation
+on: 
+  push:
+    branches: [main]
+jobs:
+  build:
+    name: Run end-to-end tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+          
+      - name: install dependencies
+        run: npm ci
+
+      - name: install playwright
+        run: npm install @playwright/test
+
+      - name: run stage environment
+        env:
+          test_env: stage
+        run: npx playwright test --project=chrome
+
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+      - name: Download zipped HTML report
+        uses: actions/download-artifact@v2
+        with:
+          name: playwright-report
+          path: playwright-report/

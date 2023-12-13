@@ -21,9 +21,9 @@ jobs:
       - name: install playwright
         run: npm install @playwright/test
 
-      - name: run stage environment
+      - name: run test environment
         env:
-          test_env: stage
+          test_env: test
         run: npx playwright test --project=chrome
 
       - uses: actions/upload-artifact@v2

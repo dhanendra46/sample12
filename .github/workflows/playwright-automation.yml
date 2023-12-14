@@ -40,6 +40,7 @@
         - name: Post to a Slack channel
           id: slack
           uses: slackapi/slack-github-action@v1.24.0
+          if: ${{ failure() }}
           env:
            SLACK_BOT_TOKEN: 'https://hooks.slack.com/services/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'
            channel-id: 'C06A4RDR86N'

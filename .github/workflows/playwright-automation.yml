@@ -1,5 +1,4 @@
----
-  name: playwright-automation
+name: playwright-automation
   on:
     push:
       branches:
@@ -26,19 +25,41 @@
           env:
             test_env: test
           run: npx playwright test --project=chrome
-        - uses: actions/upload-artifact@v2
-          if: always()
-          with:
-            name: playwright-report
-            path: playwright-report/
-            retention-days: 30
-        - name: Download zipped HTML report
-          uses: actions/download-artifact@v2
-          with:
-            name: playwright-report
-            path: playwright-report/
-        - name: Post to a Slack channel
-          id: slack
+        - name: Notify Slack on failure
+          uses: slackapi/slack-github-action@v1.23.0
           if: ${{ failure() }}
-          run: |
-            curl -X POST --data-urlencode "payload={\"channel\": \"automation\", \"username\": \"webhookbot\", \"text\": \"This is posted to automation and comes from a bot named webhookbot.\", \"icon_emoji\": \":ghost:\"}" https://hooks.slack.com/services/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
+          env:
+            SLACK_BOT_TOKEN: ${{secrets.SLACK_WEBHOOK_URL}}
+          with:
+            channel-id: ${{secrets.SLACK_CHANNEL_ID}}
+            payload:    |
+                      {
+                        "text": "End to end test has failed",
+                        "blocks": [
+                          {
+                            "type": "header",
+                            "text": {
+                              "type": "plain_text",
+                              "text": ":bangbang: End to end test has failed",
+                              "emoji": true
+                            }
+                          },
+                          {
+                            "type": "section",
+                            "text": {
+                              "type": "mrkdwn",
+                              "text": "@here"
+                            }
+                          },
+                          {
+                            "type": "context",
+                            "elements": [
+                              {
+                                "type": "mrkdwn",
+                                "text": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+  

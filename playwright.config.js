@@ -7,9 +7,9 @@ const config = {
   //retries : 1,
   workers: 1,
   /* Maximum time one test can run for. */
-  timeout: 30 * 1000,
+  timeout: 10 * 500,
   expect: {
-    timeout: 30000
+    timeout: 1000
   },
 
   use: {

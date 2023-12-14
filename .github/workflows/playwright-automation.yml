@@ -44,7 +44,6 @@
             SLACK_BOT_TOKEN: ${{secrets.SLACK_WEBHOOK_URL}}
           with:
             channel-id: ${{secrets.SLACK_CHANNEL_ID}}
-            status: ${{ job.status }}
             payload:    |
                       {
                         "text": "End to end test has failed",

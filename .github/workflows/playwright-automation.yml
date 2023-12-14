@@ -38,11 +38,40 @@
             name: playwright-report
             path: playwright-report/
         - name: Notify Slack on failure
+          uses: slackapi/slack-github-action@v1.23.0
           if: ${{ failure() }}
-          uses: rtCamp/action-slack-notify@v2.0.2
           env:
             SLACK_BOT_TOKEN: ${{secrets.SLACK_WEBHOOK_URL}}
           with:
             status: ${{ job.status }}
-            text: Playwright tests have failed.
+            payload:    |
+                      {
+                        "text": "End to end test has failed",
+                        "blocks": [
+                          {
+                            "type": "header",
+                            "text": {
+                              "type": "plain_text",
+                              "text": ":bangbang: End to end test has failed",
+                              "emoji": true
+                            }
+                          },
+                          {
+                            "type": "section",
+                            "text": {
+                              "type": "mrkdwn",
+                              "text": "@here"
+                            }
+                          },
+                          {
+                            "type": "context",
+                            "elements": [
+                              {
+                                "type": "mrkdwn",
+                                "text": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                              }
+                            ]
+                          }
+                        ]
+                      }
   

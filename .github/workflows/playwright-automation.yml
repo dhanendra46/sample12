@@ -43,4 +43,4 @@ jobs:
             SLACK_BOT_TOKEN: 'https://hooks.slack.com/services/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'
           with:
             channel-id: 'C06A4RDR86N'
-            
+            slack-message: 'this is test'            

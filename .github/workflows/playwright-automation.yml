@@ -41,7 +41,7 @@
           if: ${{ failure() }}
           uses: rtCamp/action-slack-notify@v2.0.2
           env:
-            SLACK_WEBHOOK_URL: ${{secrets.SLACK_WEBHOOK_URL}}
+            SLACK_BOT_TOKEN: ${{secrets.SLACK_WEBHOOK_URL}}
           with:
             status: ${{ job.status }}
             text: Playwright tests have failed.

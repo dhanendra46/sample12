@@ -38,8 +38,8 @@
             name: playwright-report
             path: playwright-report/
         - name: Notify Slack on failure
-          if: failure()
-          uses: 8398a7/action-slack@v3
+          if: ${{ failure() }}
+          uses: rtCamp/action-slack-notify@v2.0.2
           env:
             SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
           with:

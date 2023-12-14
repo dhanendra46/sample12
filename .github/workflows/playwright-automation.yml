@@ -39,42 +39,6 @@
             path: playwright-report/
         - name: Post to a Slack channel
           id: slack
-          uses: slackapi/slack-github-action@v1.24.0
           if: ${{ failure() }}
-          env:
-           SLACK_BOT_TOKEN: 'https://hooks.slack.com/services/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'
-           channel-id: 'C06A4RDR86N'
-          with:
-           channel-id: 'C06A4RDR86N'
-           slack-message: "GitHub build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
-           payload: |
-                      {
-                        "text": "End to end test has failed",
-                        "blocks": [
-                          {
-                            "type": "header",
-                            "text": {
-                              "type": "plain_text",
-                              "text": ":bangbang: End to end test has failed",
-                              "emoji": true
-                            }
-                          },
-                          {
-                            "type": "section",
-                            "text": {
-                              "type": "mrkdwn",
-                              "text": "@here"
-                            }
-                          },
-                          {
-                            "type": "context",
-                            "elements": [
-                              {
-                                "type": "mrkdwn",
-                                "text": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-                              }
-                            ]
-                          }
-                        ]
-                      }
-  
+          run: |
+            curl -X POST --data-urlencode "payload={\"channel\": \"automation1\", \"username\": \"webhookbot\", \"text\": \"This is posted to automation1 and comes from a bot named webhookbot.\", \"icon_emoji\": \":ghost:\"}" https://hooks.slack.com/services/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

@@ -1,45 +1,46 @@
 name: playwright-automation
-on:
+'on':
   push:
-      branches:
-        - main
+    branches:
+      - main
   schedule:
-      - cron: 45 9 * * *
-      - cron: 50 9 * * *
+    - cron: 45 9 * * *
+    - cron: 50 9 * * *
 jobs:
-    build:
-      name: Run end-to-end tests
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v3
-          with:
-            fetch-depth: 0
-        - uses: actions/setup-node@v3
-          with:
-            node-version: "20"
-        - name: install dependencies
-          run: npm ci
-        - name: install playwright
-          run: npm install @playwright/test
-        - name: run test environment
-          env:
-            test_env: test
-          run: npx playwright test --project=chrome
-        - uses: actions/upload-artifact@v2
-          if: always()
-          with:
-            name: playwright-report
-            path: playwright-report/
-            retention-days: 30
-        - name: Download zipped HTML report
-          uses: actions/download-artifact@v2
-          with:
-            name: playwright-report
-            path: playwright-report/
-        - name: Notify slack
-          if: ${{ failure() }}
-          env:
-            SLACK_BOT_TOKEN: 'https://hooks.slack.com/services/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'
-            uses: pullreminders/slack-action@master
-          with:
-            args: '{\"channel\":\"C06A4RDR86N\",\"text\":\"Hello world\"}'
+  build:
+    name: Run end-to-end tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: install dependencies
+        run: npm ci
+      - name: install playwright
+        run: npm install @playwright/test
+      - name: run test environment
+        env:
+          test_env: test
+        run: npx playwright test --project=chrome
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+      - name: Download zipped HTML report
+        uses: actions/download-artifact@v2
+        with:
+          name: playwright-report
+          path: playwright-report/
+      - name: Notify slack
+        if: '${{ failure() }}'
+        env:
+          SLACK_BOT_TOKEN: >-
+            https://hooks.slack.com/services/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
+          uses: pullreminders/slack-action@master
+        with:
+          args: '{\"channel\":\"C06A4RDR86N\",\"text\":\"Hello world\"}'

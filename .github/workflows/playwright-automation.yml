@@ -38,7 +38,7 @@ jobs:
             path: playwright-report/
         - name: Notify slack
           env:
-           SLACK_BOT_TOKEN: 'https://hooks.slack.com/services/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'
-           uses: pullreminders/slack-action@master
+            SLACK_BOT_TOKEN: 'https://hooks.slack.com/services/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'
+            uses: pullreminders/slack-action@master
           with:
             args: '{\"channel\":\"C06A4RDR86N\",\"text\":\"Hello world\"}'

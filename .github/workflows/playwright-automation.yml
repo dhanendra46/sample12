@@ -37,14 +37,16 @@
           with:
             name: playwright-report
             path: playwright-report/
-        - name: Notify Slack on failure
-          uses: slackapi/slack-github-action@v1.23.0
-          if: ${{ failure() }}
+        - name: Post to a Slack channel
+          id: slack
+          uses: slackapi/slack-github-action@v1.24.0
           env:
-            SLACK_BOT_TOKEN: ${{secrets.SLACK_WEBHOOK_URL}}
+           SLACK_BOT_TOKEN: 'https://hooks.slack.com/services/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'
+           channel-id: 'C06A4RDR86N'
           with:
-            channel-id: ${{secrets.SLACK_CHANNEL_ID}}
-            payload:    |
+           channel-id: 'C06A4RDR86N'
+           slack-message: "GitHub build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+           payload: |
                       {
                         "text": "End to end test has failed",
                         "blocks": [

@@ -41,4 +41,4 @@
           id: slack
           if: ${{ failure() }}
           run: |
-            curl -X POST --data-urlencode "payload={\"channel\": \"automation1\", \"username\": \"webhookbot\", \"text\": \"This is posted to automation1 and comes from a bot named webhookbot.\", \"icon_emoji\": \":ghost:\"}" https://hooks.slack.com/services/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
+            curl -X POST --data-urlencode "payload={\"channel\": \"automation\", \"username\": \"webhookbot\", \"text\": \"This is posted to automation and comes from a bot named webhookbot.\", \"icon_emoji\": \":ghost:\"}" https://hooks.slack.com/services/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

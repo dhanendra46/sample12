@@ -43,34 +43,4 @@ jobs:
             SLACK_BOT_TOKEN: 'https://hooks.slack.com/services/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'
           with:
             channel-id: 'C06A4RDR86N'
-            payload:    |
-                      {
-                        "text": "End to end test has failed",
-                        "blocks": [
-                          {
-                            "type": "header",
-                            "text": {
-                              "type": "plain_text",
-                              "text": ":bangbang: End to end test has failed",
-                              "emoji": true
-                            }
-                          },
-                          {
-                            "type": "section",
-                            "text": {
-                              "type": "mrkdwn",
-                              "text": "@here"
-                            }
-                          },
-                          {
-                            "type": "context",
-                            "elements": [
-                              {
-                                "type": "mrkdwn",
-                                "text": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-                              }
-                            ]
-                          }
-                        ]
-                      }
-  
+            

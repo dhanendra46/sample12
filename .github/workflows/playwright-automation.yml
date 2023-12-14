@@ -37,6 +37,7 @@ jobs:
             name: playwright-report
             path: playwright-report/
         - name: Notify slack
+          if: ${{ failure() }}
           env:
             SLACK_BOT_TOKEN: 'https://hooks.slack.com/services/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'
             uses: pullreminders/slack-action@master

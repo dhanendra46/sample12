@@ -36,11 +36,9 @@ jobs:
           with:
             name: playwright-report
             path: playwright-report/
-        - name: Notify Slack on failure
-          uses: slackapi/slack-github-action@v1.23.0
-          if: ${{ failure() }}
+        - name: Notify slack
           env:
-            SLACK_BOT_TOKEN: 'https://hooks.slack.com/services/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'
+           SLACK_BOT_TOKEN: 'https://hooks.slack.com/services/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'
+           uses: pullreminders/slack-action@master
           with:
-            channel-id: 'C06A4RDR86N'
-            slack-message: 'this is test'            
+            args: '{\"channel\":\"C06A4RDR86N\",\"text\":\"Hello world\"}'

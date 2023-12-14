@@ -43,6 +43,7 @@
           env:
             SLACK_BOT_TOKEN: ${{secrets.SLACK_WEBHOOK_URL}}
           with:
+            channel-name: automation1
             status: ${{ job.status }}
             payload:    |
                       {

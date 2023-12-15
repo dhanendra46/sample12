@@ -4,12 +4,17 @@ on:
     branches:
       - main
   schedule:
-    - cron: 50 2 * * *
     - cron: 55 2 * * *
+    - cron: 59 2 * * *
 jobs:
   build:
     name: Run end-to-end tests
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        batch:
+          - 1
+          - 2
     steps:
       - uses: actions/checkout@v3
         with:

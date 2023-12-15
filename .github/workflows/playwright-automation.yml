@@ -5,11 +5,16 @@ on:
     branches:
       - main
   schedule:
-    - cron: 18 2 * * *
-    - cron: 22 2 * * *
+    - cron: 30 2 * * *
+    - cron: 35 2 * * *
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        batch:
+          - 1
+          - 2
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v3

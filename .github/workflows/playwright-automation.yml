@@ -40,5 +40,5 @@ jobs:
         if: failure()
         run: >
           curl -X POST -H 'Content-type: application/json' \
-           --data '{"text":"<!Manideep Bojjapuri> Playwright tests failed on '"$GITHUB_REPOSITORY"'"}' \
+           --data '{"text":"<!here> Playwright tests failed on '"$GITHUB_REPOSITORY"'"}' \
            ${{ secrets.SLACK_WEBHOOK_URLS }}

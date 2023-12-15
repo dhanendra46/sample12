@@ -9,7 +9,7 @@ const config = {
   /* Maximum time one test can run for. */
   timeout: 90 * 1000,
   expect: {
-    timeout: 90000
+    timeout: 6000
   },
 
   use: {

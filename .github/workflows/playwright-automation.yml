@@ -40,6 +40,6 @@ jobs:
         if: failure()
         run: >+
           curl -X POST -H 'Content-type: application/json' \
-           --data '{"text":"<!here> Playwright tests failed \"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\""}' \
+           --data '{"text":"<!here> Playwright tests has failed \"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\""}' \
            ${{ secrets.SLACK_WEBHOOK_URLS }}
            

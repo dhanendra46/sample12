@@ -42,3 +42,41 @@ jobs:
           curl -X POST -H 'Content-type: application/json' \
            --data '{"text":"<!here> Playwright tests failed on '"$GITHUB_REPOSITORY"'"}' \
            ${{ secrets.SLACK_WEBHOOK_URLS }}
+           payload:    |
+                      {
+                        "text": "End to end test has failed",
+                        "blocks": [
+                          {
+                            "type": "header",
+                            "text": {
+                              "type": "plain_text",
+                              "text": ":bangbang: End to end test has failed",
+                              "emoji": true
+                            }
+                          },
+                          {
+                            "type": "section",
+                            "text": {
+                              "type": "mrkdwn",
+                              "text": "@here"
+                            }
+                          },
+                          {
+                            "type": "context",
+                            "elements": [
+                              {
+                                "type": "mrkdwn",
+                                "text": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                              },
+                              {
+                                "type": "mrkdwn",
+                                "text": "Env: ${{ matrix.environment }}"
+                              },
+                              {
+                                "type": "mrkdwn",
+                                "text": "URL: ${{ vars.up_e2e_url }}"
+                              }
+                            ]
+                          }
+                        ]
+                      }

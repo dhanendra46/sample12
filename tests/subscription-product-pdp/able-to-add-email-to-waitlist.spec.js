@@ -35,8 +35,8 @@ test.describe("sold out product pdp -> should be able to add email to waitlist",
     })
 
     test("launch and verify the best seller page", async () => {
-        //await homePage.launchUrl(process.env.BEST_SELLER_URL)
-        //logGenerator.customLogger("cratejoy applicaiton is launched successfully")
+        await homePage.launchUrl(process.env.BEST_SELLER_URL)
+        logGenerator.customLogger("cratejoy applicaiton is launched successfully")
         await homePage.verifyUrl(testdata.bestSellersUrl)
         await homePage.verifyCratejoyLogo()
         logGenerator.customLogger("logo is verified")

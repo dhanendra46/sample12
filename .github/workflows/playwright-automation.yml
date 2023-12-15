@@ -5,8 +5,8 @@
       branches:
         - main
     schedule:
-      - cron: 16 1 * * *
-      - cron: 10 1 * * *
+      - cron: 24 1 * * *
+      - cron: 29 1 * * *
   jobs:
     build:
       name: Run end-to-end tests

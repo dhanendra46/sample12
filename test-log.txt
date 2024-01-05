@@ -1,0 +1,3 @@
+2023-12-29T10:58:09.772Z: Starting test Run in Android - Chrome
+2023-12-29T10:58:09.806Z: Finished test Run in Android - Chrome: failed
+2023-12-29T10:58:09.830Z: Finished the run: failed

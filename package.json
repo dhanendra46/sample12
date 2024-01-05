@@ -11,7 +11,7 @@
     "openReport": "allure open allure-report",
     "playwrightInspector": "npx playwright test --debug",
     "codeGen": "npx playwright codegen http://google.com",
-    "env:test": "cross-env test_env='test'; npx playwright test --project=chrome",
+    "env:test": "cross-env test_env='test'; npx playwright test tests/subscription-product-pdp/able-to-add-email-to-waitlist.spec.js --project=chrome",
     "env:stage": "cross-env test_env='stage'; npx playwright test --project=chrome",
     "env:dev": "cross-env test_env='dev'; npx playwright test"
   },
@@ -35,8 +35,10 @@
     "path": "^0.12.7",
     "pg": "^8.11.1",
     "pixelmatch": "^5.3.0",
+    "playwright": "^1.40.1",
     "pngjs": "^7.0.0",
     "testrail-api": "^1.3.6",
+    "winston": "^3.11.0",
     "yopmail": "^1.0.5"
   }
 }

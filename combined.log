@@ -1,0 +1,62 @@
+{"level":"info","message":"hello starting position"}
+{"level":"error","message":"dhanendra"}
+{"level":"info","message":"hello starting position"}
+{"level":"error","message":"dhanendra"}
+{"level":"info","message":"hello starting position"}
+{"level":"error","message":"dhanendra"}
+{"level":"info","message":"hello starting position"}
+{"level":"error","message":"dhanendra"}
+{"level":"info","message":"hello starting position"}
+{"level":"error","message":"dhanendra"}
+{"level":"info","message":"hello starting position"}
+{"level":"error","message":"dhanendra"}
+{"level":"info","message":"hello starting position"}
+{"level":"warn","message":"this meesages for smaple case condition not working properly "}
+error: This is an error message.
+warn: This is a warning message.
+info: This is an informational message.
+error: This is an error message.
+warn: This is a warning message.
+info: This is an informational message.
+verbose: This is a verbose message.
+debug: This is a debug message.
+error: This is an error message.
+warn: This is a warning message.
+info: This is an informational message.
+error: This is an error message.
+warn: This is a warning message.
+info: This is an informational message.
+verbose: This is a verbose message.
+debug: This is a debug message.
+{"level":"http","message":"this meesages for smaple case condition not working properly "}
+{"level":"debug","message":"this meesages for smaple case condition not working properly "}
+{"level":"debug","message":"this meesages for smaple case condition not working properly "}
+{"level":"http","message":"https condition"}
+{"level":"verbose","message":"verbase condition"}
+debug: this meesages for smaple case condition not working properly 
+http: https condition
+verbose: verbase condition
+debug: this meesages for smaple case condition not working properly 
+http: https condition
+verbose: verbase condition
+info: condition info measured
+debug: this meesages for smaple case condition not working properly 
+http: https condition
+verbose: verbase condition
+info: condition info measured
+error: error condition seviority
+debug: this meesages for smaple case condition not working properly 
+http: https condition
+verbose: verbase condition
+info: condition info measured
+error: error condition seviority
+debug: this meesages for smaple case condition not working properly 
+http: https condition
+verbose: verbase condition
+info: condition info measured
+error: error condition seviority
+debug: this meesages for smaple case condition not working properly 
+http: https condition
+verbose: verbase condition
+info: condition info measured
+error: error condition seviority

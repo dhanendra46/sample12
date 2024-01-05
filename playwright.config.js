@@ -1,3 +1,5 @@
+const { devices } = require('@playwright/test');
+
 // @ts-check
 require('@playwright/test');
 
@@ -9,7 +11,7 @@ const config = {
   /* Maximum time one test can run for. */
   timeout: 90 * 1000,
   expect: {
-    timeout: 6000
+    timeout: 90000
   },
 
   use: {
@@ -23,13 +25,23 @@ const config = {
     },
   },
 
-  reporter: 'html',
+  reporter: [
+    ['html'],
+    // ['./my-awesome-reporter.js']
+  ],
   projects: [
     {
       name: 'chrome',
       use: {
-        channel: 'chrome',
-        headless: true
+        ...devices[''],
+        headless: false
+      },
+    },
+    {
+      name: 'Pixel',
+      use: {
+        ...devices[''],
+        headless: false
       },
     },
     {

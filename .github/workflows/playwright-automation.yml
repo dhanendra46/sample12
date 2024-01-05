@@ -47,4 +47,4 @@ jobs:
           fields: text
           text: 'Playwright tests failed. Failed specs: $failed_specs'
         env:
-          SLACK_WEBHOOK: '${{ secrets.SLACK_CHANNEL_ID }}'
+          SLACK_WEBHOOK: '${{ secrets.SLACK_WEBHOOK_URLS }}'

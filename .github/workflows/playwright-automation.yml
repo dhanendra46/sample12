@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-  schedule:
-    - cron: 0 2 * * *
 jobs:
   build:
     name: Run end-to-end tests
@@ -15,10 +13,10 @@ jobs:
         id: playwright
         env:
           test_env: test
-        run: >
+        run: |
           output=$(npx playwright test --project=chrome)
-
-          echo "::set-output name=failedSpecs::$(echo "$output" | jq -r '.failedSpecs')"
+          failed_specs_path=$(echo "$output" | jq -r '.failedSpecsPath')
+          echo "::set-output name=failedSpecsPath::$failed_specs_path"
         shell: bash
       - uses: actions/upload-artifact@v2
         if: always()
@@ -34,6 +32,8 @@ jobs:
       - name: Notify on failure
         if: failure()
         run: >
+          failed_specs=$(cat ${{ needs.playwright.outputs.failedSpecsPath }})
+
           curl -X POST -H 'Content-type: application/json' \
-           --data '{"text":"<!here> Playwright tests have failed: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}. Failed specs: ${{ needs.playwright.outputs.failedSpecs }}"}' \
-           ${{secrets.SLACK_WEBHOOK_URLS}}
+            --data '{"text":"<!here> Playwright tests have failed: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}. Failed specs: $failed_specs"}' \
+            ${{secrets.SLACK_WEBHOOK_URLS}}

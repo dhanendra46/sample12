@@ -12,7 +12,7 @@ const { ProductDetailsPage } = require("../../page-objects/product-details-page"
 
 var page, context, homePage, bestSellerPage, productDetailsPage,
     cartPage, logGenerator, email, myReporter
-let failedSpecs = ["Sold Out Product PDP - Should be able to add email to waitlist"]
+let failedSpecs = []
 test.describe.configure({ mode: 'serial' });
 const random = Math.random().toString(36).substring(2, 7);
 email = "suresh" + random + "@gmail.com"
@@ -59,7 +59,10 @@ test.describe("Batch 1", async () => {
     })
 })
 
-test.run().then(() => {
-    console.log(JSON.stringify({ failedSpecs }));
-    console.log(`::set-output name=runnerData::${JSON.stringify({ failedSpecs })}`);
-})
+test.run().then(async () => {
+    // Output the failed spec names
+    if (failedSpecs.length > 0) {
+      console.log(`::set-output name=failedSpecs::${JSON.stringify({ failedSpecs })}`);
+      process.exit(1); // Optional: Set a non-zero exit code if there are failed specs
+    }
+  });

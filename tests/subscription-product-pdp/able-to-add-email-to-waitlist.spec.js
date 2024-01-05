@@ -55,7 +55,7 @@ test.describe("Batch 1", async () => {
     })
 })
 
- test.afterEach("test cases"async ({testInfo}) => {
+ test.afterEach(async ({testInfo}) => {
     if (testInfo.status !== 'passed') {
       failedSpecs.push(testInfo.title);
     }

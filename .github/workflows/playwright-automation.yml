@@ -21,25 +21,32 @@
           run: npm ci
         - name: install playwright
           run: npm install @playwright/test
-        - name: run test environment
-          env:
-            test_env: test
-          run: npx playwright test --project=chrome
-        - uses: actions/upload-artifact@v2
-          if: always()
-          with:
-            name: playwright-report
-            path: playwright-report/
-            retention-days: 30
-        - name: Download zipped HTML report
-          uses: actions/download-artifact@v2
-          with:
-            name: playwright-report
-            path: playwright-report/
-        - name: Notify on failure
-          if: failure()
-          run: >
-            curl -X POST -H 'Content-type: application/json' \
-              --data '{"text":"<!here> Playwright tests have failed: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' \
-              ${{secrets.SLACK_WEBHOOK_URLS}}
+       - name: run test environment
+        id: playwright
+        env:
+          test_env: test
+        run: |
+          output=$(npx playwright test --project=chrome)
+          echo "::set-output name=failedSpecs::$(echo "$output" | jq -r '.failedSpecs')"
+        shell: bash
+
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+      - name: Download zipped HTML report
+        uses: actions/download-artifact@v2
+        with:
+          name: playwright-report
+          path: playwright-report/
+
+      - name: Notify on failure
+        if: failure()
+        run: >
+          curl -X POST -H 'Content-type: application/json' \
+            --data '{"text":"<!here> Playwright tests have failed: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}. Failed specs: ${{ needs.playwright.outputs.failedSpecs }}"}' \
+            ${{secrets.SLACK_WEBHOOK_URLS}}
   

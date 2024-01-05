@@ -9,6 +9,8 @@ const testdata = require("../../fixtures/test-data.json")
 const { ProductDetailsPage } = require("../../page-objects/product-details-page")
 //const { MyReporter } = require("../../my-awesome-reporter")
 
+const fs = require('fs');
+
 
 var page, context, homePage, bestSellerPage, productDetailsPage,
     cartPage, logGenerator, email, myReporter
@@ -53,7 +55,6 @@ test.describe("Batch 1", async () => {
             logGenerator.customLogger("Test execution ended!")
         })
     })
-})
 
  test.afterEach(async ({testInfo}) => {
     if (testInfo.status !== 'passed') {
@@ -62,9 +63,14 @@ test.describe("Batch 1", async () => {
   });
 
  test.run().then(async () => {
-    // Output the failed spec names in JSON format
-    console.log(`::set-output name=failedSpecs::${JSON.stringify(failedSpecs)}`);
+    // Write the failed spec names to a file
+    fs.writeFileSync('failed-specs.json', JSON.stringify(failedSpecs));
+
+    // Output the file path to be used in the next step
+    console.log(`::set-output name=failedSpecsPath::failed-specs.json`);
+
     if (failedSpecs.length > 0) {
       process.exit(1); // Optional: Set a non-zero exit code if there are failed specs
     }
   });
+})

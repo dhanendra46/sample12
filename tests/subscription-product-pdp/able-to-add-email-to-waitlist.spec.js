@@ -34,10 +34,6 @@ test.describe("Batch 1", async () => {
             logGenerator.customLogger("Community page pdp -> Test execution started....")
         })
 
-        test.afterAll(async () => {
-            await page.close()
-        })
-
         test.only("launch and verify the best seller page", async () => {
             await homePage.launchUrl(process.env.BEST_SELLER_URL)
             logGenerator.customLogger("cratejoy applicaiton is launched successfully")
@@ -59,10 +55,16 @@ test.describe("Batch 1", async () => {
     })
 })
 
-test.run().then(async () => {
-    // Output the failed spec names
+ test.afterEach("test cases"async ({testInfo}) => {
+    if (testInfo.status !== 'passed') {
+      failedSpecs.push(testInfo.title);
+    }
+  });
+
+ test.run().then(async () => {
+    // Output the failed spec names in JSON format
+    console.log(`::set-output name=failedSpecs::${JSON.stringify(failedSpecs)}`);
     if (failedSpecs.length > 0) {
-      console.log(`::set-output name=failedSpecs::${JSON.stringify({ failedSpecs })}`);
       process.exit(1); // Optional: Set a non-zero exit code if there are failed specs
     }
   });

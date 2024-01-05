@@ -35,5 +35,5 @@ jobs:
         if: failure()
         run: >
           curl -X POST -H 'Content-type: application/json' \
-            --data '{"text":"<!here> Playwright tests have failed: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}. Failed specs: ${{ needs.playwright.outputs.failedSpecs }}"}' \
-            ${{secrets.SLACK_WEBHOOK_URLS}}
+           --data '{"text":"<!here> Playwright tests have failed: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}. Failed specs: ${{ needs.playwright.outputs.failedSpecs }}"}' \
+           ${{secrets.SLACK_WEBHOOK_URLS}}

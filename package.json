@@ -11,7 +11,7 @@
     "openReport": "allure open allure-report",
     "playwrightInspector": "npx playwright test --debug",
     "codeGen": "npx playwright codegen http://google.com",
-    "env:test": "cross-env test_env='test'; npx playwright test --project=chrome",
+    "env:test": "cross-env test_env='test'; npx playwright test tests/subscription-product-pdp/able-to-add-email-to-waitlist.spec.js --project=chrome",
     "env:stage": "cross-env test_env='stage'; npx playwright test --project=chrome",
     "env:dev": "cross-env test_env='dev'; npx playwright test"
   },

@@ -19,6 +19,8 @@ test.describe.configure({ mode: 'serial' });
 const random = Math.random().toString(36).substring(2, 7);
 email = "suresh" + random + "@gmail.com"
 
+const conditionForTestFailure = "autoomation failures"
+
 test.describe("Batch 1", async () => {
     test.describe("sold out product pdp -> should be able to add email to waitlist", () => {
 
@@ -36,13 +38,13 @@ test.describe("Batch 1", async () => {
             logGenerator.customLogger("Community page pdp -> Test execution started....")
         })
 
-        test.only("launch and verify the best seller page", async () => {
+        test("launch and verify the best seller page", async () => {
             await homePage.launchUrl(process.env.BEST_SELLER_URL)
             logGenerator.customLogger("cratejoy applicaiton is launched successfully")
             await homePage.verifyUrl(testdata.bestSellersUrl)
             await homePage.verifyCratejoyLogo()
             logGenerator.customLogger("logo is verified")
-            await homePage.closeDiscountPopup()
+            //await homePage.closeDiscountPopup()
             console.log("logo is verified")
         })
 
@@ -56,21 +58,20 @@ test.describe("Batch 1", async () => {
         })
     })
 
- test.afterEach(async ({testInfo}) => {
-    if (testInfo.status !== 'passed') {
-      failedSpecs.push(testInfo.title);
-    }
-  });
+    test.afterEach(async ({ testInfo }) => {
+        if (testInfo.status !== 'passed') {
+            const timestamp = new Date().toISOString();
+            const failedSpecWithTitle = `${testInfo.title} - ${timestamp}`;
+            failedSpecs.push(failedSpecWithTitle);
+        }
+    });
 
- test.run().then(async () => {
-    // Write the failed spec names to a file
-    fs.writeFileSync('failed-specs.json', JSON.stringify(failedSpecs));
+    test.run().then(async () => {
+        fs.writeFileSync('failed-specs.json', JSON.stringify(failedSpecs));
+        console.log(`::set-output name=failedSpecsPath::failed-specs.json`);
 
-    // Output the file path to be used in the next step
-    console.log(`::set-output name=failedSpecsPath::failed-specs.json`);
-
-    if (failedSpecs.length > 0) {
-      process.exit(1); // Optional: Set a non-zero exit code if there are failed specs
-    }
-  });
+        if (failedSpecs.length > 0) {
+            process.exit(1)
+        }
+    });
 })

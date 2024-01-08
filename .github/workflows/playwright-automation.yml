@@ -49,6 +49,16 @@ jobs:
       - name: Notify on failure
         if: failure()
         run: |
-          curl -X POST -H 'Content-type: application/json' \
-            --data '{"text":"<!here> Playwright tests have failed in the following test(s): \n\n```\n'"$(cat playwright-report/failed-tests.txt)"'\n``` \n\nView details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' \
+          failed_tests=$(cat playwright-report/failed-tests.txt)
+          message="<!here> Playwright tests have failed in the following test(s): \n\n\`\`\`\n$failed_tests\n\`\`\` \n\nView details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          spec_name=$(echo "$failed_tests" | grep -oP '(?<=\[spec\] ).*')
+          message_with_spec="<!here> Playwright tests have failed in the following spec: \n\n\`\`\`\n$spec_name\n\`\`\` \n\nView details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          if [[ -n "$spec_name" ]]; then
+            curl -X POST -H 'Content-type: application/json' \
+            --data "{\"text\":\"$message_with_spec\"}" \
             ${{secrets.SLACK_WEBHOOK_URLS}}
+          else
+          curl -X POST -H 'Content-type: application/json' \
+          --data "{\"text\":\"$message\"}" \
+          ${{secrets.SLACK_WEBHOOK_URLS}}
+          fi

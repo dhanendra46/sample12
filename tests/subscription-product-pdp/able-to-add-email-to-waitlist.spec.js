@@ -58,10 +58,10 @@ test.describe("Batch 1", async () => {
         })
     })
 
-    test.afterEach(async ({ testInfo }) => {
-        if (testInfo.status !== 'passed') {
+    test.afterEach(async () => {
+        if (page.status !== 'passed') {
             const timestamp = new Date().toISOString();
-            const failedSpecWithTitle = `${testInfo.title} - ${timestamp}`;
+            const failedSpecWithTitle = `${page.title} - ${timestamp}`;
             failedSpecs.push(failedSpecWithTitle);
         }
     });

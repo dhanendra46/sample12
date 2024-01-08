@@ -58,20 +58,22 @@ test.describe("Batch 1", async () => {
         })
     })
 
-    test.afterEach(async () => {
-        if (page.status !== 'passed') {
+    test.afterEach(async ({ testInfo }) => {
+        if (testInfo.status !== 'passed') {
             const timestamp = new Date().toISOString();
-            const failedSpecWithTitle = `${page.title} - ${timestamp}`;
+            const failedSpecWithTitle = `${testInfo.title} - ${timestamp}`;
             failedSpecs.push(failedSpecWithTitle);
         }
-    });
-
-    test.run().then(async () => {
         fs.writeFileSync('failed-specs.json', JSON.stringify(failedSpecs));
         console.log(`::set-output name=failedSpecsPath::failed-specs.json`);
-
-        if (failedSpecs.length > 0) {
-            process.exit(1)
-        }
     });
+
+    // test.run().then(async () => {
+    //     fs.writeFileSync('failed-specs.json', JSON.stringify(failedSpecs));
+    //     console.log(`::set-output name=failedSpecsPath::failed-specs.json`);
+
+    //     if (failedSpecs.length > 0) {
+    //         process.exit(1)
+    //     }
+    // });
 })

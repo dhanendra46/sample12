@@ -1,54 +1,55 @@
-name: playwright-automation
-
-on:
-  push:
-    branches:
-      - main
-  schedule:
-    - cron: 0 2 * * *
-
-jobs:
-  build:
-    name: Run end-to-end tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "20"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install playwright
-        run: npm install @playwright/test
-
-      - name: Run test environment
-        env:
-          test_env: test
-        run: npx playwright test --project=chrome --reporter=list
-
-      - uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
-
-      - name: Download zipped HTML report
-        uses: actions/download-artifact@v2
-        with:
-          name: playwright-report
-          path: playwright-report/
-
-      - name: Notify on failure
-        if: failure()
-        run: >
-          curl -X POST -H 'Content-type: application/json' \
-            --data '{"text":"<!here> Playwright tests have failed in the following test(s): \n\n```\n'"$(cat playwright-report/*.txt)"'\n``` \n\nView details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' \
-            ${{secrets.SLACK_WEBHOOK_URLS}}
+---
+  name: playwright-automation
+  on:
+    push:
+      branches:
+        - main
+    schedule:
+      - cron: 0 2 * * *
+  jobs:
+    build:
+      name: Run end-to-end tests
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v3
+          with:
+            fetch-depth: 0
+        - name: Set up Node.js
+          uses: actions/setup-node@v3
+          with:
+            node-version: "20"
+        - name: Install dependencies
+          run: npm ci
+        - name: Install playwright
+          run: npm install @playwright/test
+        - name: Create directory for playwright report
+          run: mkdir -p playwright-report
+        - name: Run test environment and capture failed specs
+          env:
+            test_env: test
+          run: >
+            npx playwright test --project=chrome --reporter=list >
+            playwright-report/failed-specs.txt || echo "No failed specs."
+        - uses: actions/upload-artifact@v2
+          if: always()
+          with:
+            name: playwright-report
+            path: playwright-report/
+            retention-days: 30
+        - name: Download zipped HTML report
+          uses: actions/download-artifact@v2
+          with:
+            name: playwright-report
+            path: playwright-report/
+        - name: Notify on failure
+          if: failure()
+          run: >
+            failedSpecs=$(cat playwright-report/failed-specs.txt)
+  
+            if [ -n "$failedSpecs" ]; then
+              curl -X POST -H 'Content-type: application/json' \
+                --data '{"text":"<!here> Playwright tests have failed in the following spec(s): \n\n```\n'"$failedSpecs"'\n``` \n\nView details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' \
+                ${{secrets.SLACK_WEBHOOK_URLS}}
+            fi
+  

@@ -4,7 +4,7 @@ const { test } = require('@playwright/test');
 
 test('Example test 1', async ({ page }) => {
   // Your test logic here
-  await page.goto('https://www.example.com');
+  //await page.goto('https://www.example.com');
   await page.waitForSelector('h1');
 });
 

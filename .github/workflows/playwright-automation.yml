@@ -51,4 +51,4 @@ jobs:
         run: |
           curl -X POST -H 'Content-type: application/json' \
             --data '{"text":"<!here> Playwright tests have failed in the following test(s): \n\n```\n'"$(cat playwright-report/failed-tests.txt)"'\n``` \n\nView details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' \
-            ${{secrets.SLACK_NOTIFICATION_HOOK}}
+            ${{secrets.SLACK_WEBHOOK_URLS}}

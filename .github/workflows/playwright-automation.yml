@@ -28,13 +28,10 @@ jobs:
       - name: Install playwright
         run: npm install @playwright/test
 
-      - name: Create directory for playwright report
-        run: mkdir -p playwright-report
-
-      - name: Run test environment and capture failed specs
+      - name: Run test environment
         env:
           test_env: test
-        run: npx playwright test --project=chrome --reporter=list > playwright-report/failed-specs.txt || echo "No failed specs."
+        run: npx playwright test --project=chrome --reporter=list > playwright-report/failed-tests.txt
 
       - uses: actions/upload-artifact@v2
         if: always()
@@ -52,10 +49,6 @@ jobs:
       - name: Notify on failure
         if: failure()
         run: |
-          failedSpecs=$(cat playwright-report/failed-specs.txt)
-  
-          if [ -n "$failedSpecs" ]; then
-            curl -X POST -H 'Content-type: application/json' \
-              --data '{"text":"<!here> Playwright tests have failed in the following spec(s): \n\n```\n'"$failedSpecs"'\n``` \n\nView details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' \
-              ${{secrets.SLACK_WEBHOOK_URLS}}
-          fi
+          curl -X POST -H 'Content-type: application/json' \
+            --data '{"text":"<!here> Playwright tests have failed in the following test(s): \n\n```\n'"$(cat playwright-report/failed-tests.txt)"'\n``` \n\nView details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' \
+            ${{secrets.SLACK_WEBHOOK_URLS}}

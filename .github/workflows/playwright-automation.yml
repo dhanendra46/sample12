@@ -23,7 +23,7 @@ jobs:
 
       - name: Run Playwright tests
         id: playwright
-        run: npx playwright test --project=chromium
+        run: npx playwright test --project=chrome
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2

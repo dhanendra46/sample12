@@ -31,7 +31,7 @@ jobs:
       - name: Run test environment and generate JSON report
         env:
           test_env: test
-        run: npx playwright test --project=chrome --reporter=dot,json:playwright-report/report.json
+        run: npx playwright test --project=chrome --reporter=dot,json=playwright-report/report.json
 
       - uses: actions/upload-artifact@v2
         if: always()

@@ -28,10 +28,10 @@ jobs:
       - name: Install playwright
         run: npm install @playwright/test
 
-      - name: Run test environment and generate JSON report
+      - name: Run test environment
         env:
           test_env: test
-        run: npx playwright test --project=chrome --reporter=dot,json=playwright-report/report.json
+        run: npx playwright test --project=chrome --reporter=list > playwright-report/failed-tests.txt
 
       - uses: actions/upload-artifact@v2
         if: always()
@@ -40,19 +40,15 @@ jobs:
           path: playwright-report/
           retention-days: 30
 
-      - name: Extract failed spec names
-        id: extract_failed_specs
-        run: echo "::set-output name=failed_specs::$(jq -r '.suites[] | select(.status == "failed") | .tests[].fullName' playwright-report/report.json | paste -s -d, -)"
-
       - name: Download zipped HTML report
         uses: actions/download-artifact@v2
         with:
           name: playwright-report
           path: playwright-report/
 
-      - name: Notify on failure with failed spec names
+      - name: Notify on failure
         if: failure()
         run: |
           curl -X POST -H 'Content-type: application/json' \
-            --data '{"text":"<!here> Playwright tests have failed in the following test(s): \n\n```\n'"${{ steps.extract_failed_specs.outputs.failed_specs }}""'\n``` \n\nView details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' \
+            --data '{"text":"<!here> Playwright tests have failed in the following test(s): \n\n```\n'"$(cat playwright-report/failed-tests.txt)"'\n``` \n\nView details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' \
             ${{secrets.SLACK_WEBHOOK_URLS}}

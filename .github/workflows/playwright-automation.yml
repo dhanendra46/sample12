@@ -30,7 +30,7 @@ jobs:
           # Check if there are any JSON files in the default Playwright output folder
           if [ -n "$(find . -name '*.json' -print -quit)" ]; then
             # Extract failed specs from JSON files
-            failedSpecs=$(jq -r '.suites[] | select(.status == "failed") | .fullName' *.json)
+            failedSpecs=$(jq -r '.suites[]? | select(.status == "failed") | .fullName' *.json | paste -s -d, -)
 
             # Check if there are failed specs
             if [ -n "$failedSpecs" ]; then

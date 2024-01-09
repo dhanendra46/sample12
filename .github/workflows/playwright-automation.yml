@@ -30,11 +30,16 @@ jobs:
           # Check if there are any JSON files in the 'results' folder
           if [ -n "$(find results -name '*.json' -print -quit)" ]; then
             # Extract failed specs from JSON files
-            failedSpecs=$(jq -r '.suites[] | select(.status == "failed") | .fullName' results/*.json | paste -s -d, -)
+            failedSpecs=$(jq -r '.suites[] | select(.status == "failed") | .fullName' results/*.json)
+
+            # Check if there are failed specs
+            if [ -n "$failedSpecs" ]; then
+              # Create and send Slack message
+              message=":x: Playwright Tests Failed\nFailed Specs:\n$failedSpecs"
+              curl -X POST -H "Authorization: Bearer ${{secrets.SLACK_WEBHOOK_URLS}}" -H "Content-Type: application/json" -d '{"channel": "C069Q6XBP1D", "text": "'"$message"'"}' https://slack.com/api/chat.postMessage
+            else
+              echo "No failed specs found."
+            fi
           else
-            failedSpecs="No test results found."
+            echo "No test results found."
           fi
-          
-          # Create and send Slack message
-          message=":x: Playwright Tests Failed\nFailed Specs:\n$failedSpecs"
-          curl -X POST -H "Authorization: Bearer ${{secrets.SLACK_WEBHOOK_URLS}}" -H "Content-Type: application/json" -d '{"channel": "C069Q6XBP1D", "text": "'"$message"'"}' https://slack.com/api/chat.postMessage

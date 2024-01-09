@@ -27,10 +27,10 @@ jobs:
       - name: Send Slack Notification on Failure
         if: ${{ failure() }}
         run: |
-          # Check if there are any JSON files in the 'results' folder
-          if [ -n "$(find results -name '*.json' -print -quit)" ]; then
+          # Check if there are any JSON files in the default Playwright output folder
+          if [ -n "$(find . -name '*.json' -print -quit)" ]; then
             # Extract failed specs from JSON files
-            failedSpecs=$(jq -r '.suites[] | select(.status == "failed") | .fullName' results/*.json)
+            failedSpecs=$(jq -r '.suites[] | select(.status == "failed") | .fullName' *.json)
 
             # Check if there are failed specs
             if [ -n "$failedSpecs" ]; then

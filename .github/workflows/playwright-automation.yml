@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 14
 
       - name: Install Dependencies
         run: npm install
@@ -30,7 +30,7 @@ jobs:
           # Check if there are any JSON files in the default Playwright output folder
           if [ -n "$(find . -name '*.json' -print -quit)" ]; then
             # Extract failed specs from JSON files
-            failedSpecs=$(jq -r '.suites[]? | select(.status == "failed") | .fullName' *.json | paste -s -d, -)
+            failedSpecs=$(jq -r '[.suites[]? | select(.status == "failed") | .fullName] | join(", ")' *.json)
 
             # Check if there are failed specs
             if [ -n "$failedSpecs" ]; then
